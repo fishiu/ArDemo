@@ -15,7 +15,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     @IBOutlet var sceneView: ARSCNView!
     let arSession = ARSession()
     let configuration = ARWorldTrackingConfiguration()
-    var nodeWeCanChage: SCNNode?
+    var planeNode: SCNNode?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +28,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         // Show statistics such as fps and timing information
         sceneView.showsStatistics = true
-        sceneView.debugOptions = [SCNDebugOptions.showWireframe, SCNDebugOptions.showFeaturePoints, SCNDebugOptions.showCreases]
+//        sceneView.debugOptions = [SCNDebugOptions.showWireframe, SCNDebugOptions.showFeaturePoints, SCNDebugOptions.showCreases]
         
         // Create a new scene
         // let scene = SCNScene(named: "art.scnassets/ship.scn")!
@@ -52,7 +52,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             self.addChild(boardController)
             
             // set the pixel size of the Card View
-            boardController.view.frame = CGRect(x: 0, y: 0, width: 500, height: 500)
+            boardController.view.frame = CGRect(x: 0, y: 0, width: 750, height: 1334)
             
             // add the ar card view as a subview to the main view
             self.view.addSubview(boardController.view)
@@ -79,7 +79,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
-        if nodeWeCanChage == nil {
+        if planeNode == nil {
             // check we have detected an ARPlaneAnchor
             guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
             
@@ -89,14 +89,14 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             
             // create an SCNPlane which matches the size of ARPlaneAnchor
             let plane = SCNPlane(width: width, height: height)
-            nodeWeCanChage = SCNNode(geometry: plane)
-            createHostingController(for: nodeWeCanChage!)
+            planeNode = SCNNode(geometry: plane)
+            createHostingController(for: planeNode!)
             
             // rotate
-            nodeWeCanChage?.eulerAngles.x = -.pi/2
+            planeNode?.eulerAngles.x = -.pi/2
             
             // add it to node & thus the hiearchy
-            node.addChildNode(nodeWeCanChage!)
+            node.addChildNode(planeNode!)
         }
     }
 }
